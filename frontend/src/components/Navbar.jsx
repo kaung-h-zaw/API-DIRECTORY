@@ -1,5 +1,13 @@
-import { Search, Filter, ChevronDown } from "lucide-react";
-const Navbar = ({ search, setSearch, apiCount, category, onCategoryClick }) => {
+import { Search, Bookmark } from "lucide-react";
+
+const Navbar = ({
+  search,
+  setSearch,
+  apiCount,
+  savedCount,
+  showSavedOnly,
+  setShowSavedOnly,
+}) => {
   return (
     <div className="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between gap-4">
@@ -27,46 +35,43 @@ const Navbar = ({ search, setSearch, apiCount, category, onCategoryClick }) => {
           </span>
         </div>
 
-        {/* Search & Filter Group */}
-        <div className="flex items-center gap-3 w-full max-w-xl justify-end">
-          {/* Search Bar */}
-          <div className="relative w-full max-w-sm hidden sm:block">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input
-              type="text"
-              placeholder="Search APIs..."
-              className="w-full bg-gray-50 border border-gray-200 rounded-full py-2.5 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-gray-100 focus:border-gray-300 focus:outline-none transition-all"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-
-          {/* Categories Button */}
-          <button
-            onClick={onCategoryClick}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-black text-white text-sm font-bold shadow-lg shadow-gray-200 hover:bg-gray-800 transition-all active:scale-95 shrink-0"
-          >
-            <Filter size={14} />
-            <span className="hidden md:inline">
-              {category === "All" ? "Categories" : category}
-            </span>
-            <span className="md:hidden">Filter</span>
-            <ChevronDown size={14} className="opacity-70" />
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Search (Visible only on small screens) */}
-      <div className="px-6 pb-4 sm:hidden">
-        <div className="relative w-full">
+        {/* Middle: Search Bar */}
+        <div className="relative w-full max-w-md hidden md:block">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
           <input
             type="text"
-            placeholder="Search APIs..."
-            className="w-full bg-gray-50 border border-gray-200 rounded-full py-2.5 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-gray-100 focus:border-gray-300 focus:outline-none transition-all"
+            placeholder="Search 1400+ APIs..."
+            className="w-full bg-gray-50 border border-gray-200 rounded-full py-2 pl-10 pr-4 text-sm focus:bg-white focus:ring-2 focus:ring-blue-100 focus:border-blue-300 focus:outline-none transition-all"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+        </div>
+
+        {/* Right: Actions (Saved Button) */}
+        <div className="flex items-center gap-3">
+          {/* Mobile Search Icon (optional) */}
+          <button className="md:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-full">
+            <Search size={20} />
+          </button>
+
+          {/* MY SAVED BUTTON */}
+          <button
+            onClick={() => setShowSavedOnly(!showSavedOnly)}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-bold border transition-all ${
+              showSavedOnly
+                ? "bg-yellow-50 text-yellow-700 border-yellow-200 ring-2 ring-yellow-100/50"
+                : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+            }`}
+          >
+            <Bookmark
+              size={16}
+              className={showSavedOnly ? "fill-yellow-700" : ""}
+            />
+            <span className="hidden sm:inline">Saved</span>
+            <span className="bg-gray-100 text-gray-600 px-1.5 py-0.5 rounded-md text-[10px] ml-1">
+              {savedCount}
+            </span>
+          </button>
         </div>
       </div>
     </div>
