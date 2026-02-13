@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "../helpers/axios";
 import ApiCard from "../components/ApiCard";
 import Navbar from "../components/Navbar";
-import CodeModal from "../components/CodeModal";
 import FilterBar from "../components/FilterBar";
 import LoadingState from "../components/LoadingState";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -19,7 +18,6 @@ const Home = () => {
   const [filterCors, setFilterCors] = useState("All");
 
   // Feature States
-  const [selectedApiForCode, setSelectedApiForCode] = useState(null);
   const { bookmarks, toggleBookmark, isBookmarked } = useBookmarks();
   const [showSavedOnly, setShowSavedOnly] = useState(false);
 
@@ -284,14 +282,6 @@ const Home = () => {
           </>
         )}
       </div>
-
-      {/* Code Modal */}
-      {selectedApiForCode && (
-        <CodeModal
-          api={selectedApiForCode}
-          onClose={() => setSelectedApiForCode(null)}
-        />
-      )}
     </div>
   );
 };

@@ -115,18 +115,6 @@ const ApiCard = ({ api, onShowCode, isBookmarked, onToggleBookmark }) => {
         </span>
 
         <div className="flex items-center gap-2">
-          {/* Code Button */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              onShowCode();
-            }}
-            className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-            title="View Code Snippet"
-          >
-            <Code size={16} />
-          </button>
-
           {/* Try It Link */}
           <a
             href={api.url}
