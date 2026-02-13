@@ -1,72 +1,112 @@
-import { Globe, Shield, Code } from "lucide-react";
+import {
+  ExternalLink,
+  Globe,
+  Check,
+  X,
+  Shield,
+  Lock,
+  Unlock,
+} from "lucide-react";
 
 const ApiCard = ({ api }) => {
-  const isFree = api.authType === "No Auth" || api.authType === "";
+  // Helper to get favicon URL
+  const getFaviconUrl = (url) => {
+    try {
+      const hostname = new URL(url).hostname;
+      return `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const isFree =
+    !api.authType || api.authType === "No Auth" || api.authType === "";
+  const hasCors = api.cors === "yes" || api.cors === "Yes";
 
   return (
-    <div className="group bg-white border border-gray-200 rounded-xl p-5 hover:border-black hover:ring-1 hover:ring-black transition-all duration-200 shadow-sm flex flex-col h-full">
-      {/* Top Row */}
-      <div className="flex justify-between items-start mb-4">
-        <div className="p-2 bg-gray-50 rounded-md border border-gray-100">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-          >
-            <path
-              fill="none"
-              stroke="rgb(107 114 128)"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m16 18l6-6l-6-6M8 6l-6 6l6 6"
-            />
-          </svg>
+    <div className="group relative bg-white border border-gray-200 rounded-2xl p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full">
+      {/* 1. TOP SECTION: Logo & Auth Badge */}
+      <div className="flex items-start justify-between mb-4">
+        {/* Logo Box */}
+        <div className="w-12 h-12 rounded-xl bg-gray-50 p-2 flex items-center justify-center border border-gray-100 group-hover:bg-white group-hover:border-blue-100 transition-colors">
+          <img
+            src={getFaviconUrl(api.url)}
+            alt={`${api.name} logo`}
+            className="w-8 h-8 object-contain opacity-90 group-hover:scale-110 transition-transform"
+            onError={(e) => {
+              e.target.style.display = "none";
+              e.target.nextSibling.style.display = "block";
+            }}
+          />
+          <Globe className="w-6 h-6 text-gray-400 hidden" />
         </div>
-        <span
-          className={`text-[10px] font-bold px-2 py-1 rounded border ${isFree ? "bg-emerald-50 border-emerald-100 text-emerald-700" : "bg-gray-50 border-gray-100 text-gray-600"}`}
+
+        {/* Auth Status Badge */}
+        <div
+          className={`flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full border uppercase tracking-wide ${
+            isFree
+              ? "bg-green-50 text-green-700 border-green-200"
+              : "bg-gray-50 text-gray-600 border-gray-200"
+          }`}
         >
-          {isFree ? "FREE" : api.authType || "API KEY"}
-        </span>
+          {isFree ? <Unlock size={10} /> : <Lock size={10} />}
+          {api.authType || "Free"}
+        </div>
       </div>
 
-      <h3 className="font-bold text-lg text-gray-900 mb-2">{api.name}</h3>
-      <p className="text-sm text-gray-500 mb-6 flex-grow leading-relaxed">
+      {/* 2. TITLE & DESCRIPTION */}
+      <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-1">
+        {api.name}
+      </h3>
+      <p className="text-sm text-gray-500 mb-5 line-clamp-2 flex-grow">
         {api.description}
       </p>
 
-      <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-        <span className="text-xs font-semibold text-gray-400">
+      {/* 3. TECHNICAL SPECS ROW (The details you wanted) */}
+      <div className="flex items-center gap-4 border-t border-b border-gray-50 py-3 mb-4 text-xs font-medium text-gray-500">
+        {/* CORS Status */}
+        <div
+          className="flex items-center gap-1.5"
+          title="Cross-Origin Resource Sharing"
+        >
+          {hasCors ? (
+            <Check size={14} className="text-green-500" />
+          ) : (
+            <X size={14} className="text-orange-500" />
+          )}
+          <span className={hasCors ? "text-gray-700" : "text-gray-400"}>
+            CORS
+          </span>
+        </div>
+
+        {/* HTTPS Status (Assumed Yes for modern list) */}
+        <div className="flex items-center gap-1.5">
+          <Check size={14} className="text-green-500" />
+          <span className="text-gray-700">HTTPS</span>
+        </div>
+      </div>
+
+      {/* 4. FOOTER: Category & Action */}
+      <div className="flex items-center justify-between mt-auto">
+        <span className="text-[11px] font-bold text-gray-500 bg-gray-100 px-2 py-1 rounded-md uppercase tracking-wide">
           {api.category}
         </span>
+
         <a
           href={api.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs font-bold text-gray-700 flex items-center space-y-2 border-b border-transparent hover:border-black transition-all"
+          className="flex items-center gap-1 text-sm font-bold text-gray-900 group-hover:text-blue-600 transition-colors"
         >
-          Explore
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            className="ml-1"
-          >
-            <g
-              fill="none"
-              stroke="rgb(55 65 81)"
-              stroke-linecap="round"
-              stroke-width="1.5"
-            >
-              <path d="M2 12c0 4.714 0 7.071 1.464 8.535C4.93 22 7.286 22 12 22s7.071 0 8.535-1.465C22 19.072 22 16.714 22 12s0-7.071-1.465-8.536C19.072 2 16.714 2 12 2S4.929 2 3.464 3.464c-.973.974-1.3 2.343-1.409 4.536" />
-              <path d="m14.52 14.5l-1.097 2.862c-.319.83-1.483.857-1.731.04l-1.057-3.477a.84.84 0 0 0-.56-.56l-3.477-1.057c-.817-.248-.79-1.412.04-1.73l9.166-3.513a.863.863 0 0 1 1.13 1.131l-.966 2.524" />
-            </g>
-          </svg>
+          Try It
+          <ExternalLink
+            size={14}
+            className="group-hover:translate-x-0.5 transition-transform"
+          />
         </a>
       </div>
     </div>
   );
 };
+
 export default ApiCard;

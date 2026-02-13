@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import CategoryModal from "../components/CategoryModal";
 import SkeletonCard from "../components/SkeletonCard"; // Import Skeleton
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import LoadingState from "../components/LoadingState";
 
 const Home = () => {
   const [apis, setApis] = useState([]);
@@ -114,11 +115,7 @@ const Home = () => {
 
         {/* LOADING STATE: Skeleton Grid */}
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {[...Array(itemsPerPage)].map((_, index) => (
-              <SkeletonCard key={index} />
-            ))}
-          </div>
+          <LoadingState />
         ) : (
           <>
             {/* DATA STATE: Actual Grid */}

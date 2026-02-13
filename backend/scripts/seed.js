@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const path = require("path");
-const { seedDatabase } = require("../utils/seedService"); // Make sure this path is correct
+const { seedDatabase } = require("../utils/superSeed"); // Make sure this path is correct
 
 // Load .env from backend root
 dotenv.config({ path: path.join(__dirname, "../.env") });
