@@ -1,0 +1,8 @@
+import axios from "axios";
+
+const axiosClient = axios.create({
+  baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:5001",
+  withCredentials: true, // Important for cookies!
+});
+
+export default axiosClient;
